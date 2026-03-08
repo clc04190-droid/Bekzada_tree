@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Дерево знаний</title>
+
+<style>
+body{
+margin:0;
+font-family:Segoe UI;
+background:linear-gradient(#c8e6c9,#e3f2fd);
+text-align:center;
+}
+
+h1{
+font-size:42px;
+color:#2c3e50;
+margin-top:20px;
+}
+
+p{
+font-size:20px;
+color:#555;
+}
+
+#game{
+width:900px;
+height:650px;
+margin:auto;
+position:relative;
+background:rgba(255,255,255,0.6);
+border-radius:30px;
+overflow:hidden;
+box-shadow:0 15px 30px rgba(0,0,0,0.15);
+}
+
+/* дерево */
+
+.tree{
+position:absolute;
+bottom:0;
+left:50%;
+transform:translateX(-50%);
+height:100%;
+animation:wind 5s infinite ease-in-out;
+}
+
+@keyframes wind{
+0%{transform:translateX(-50%) rotate(0deg)}
+50%{transform:translateX(-50%) rotate(1deg)}
+100%{transform:translateX(-50%) rotate(0deg)}
+}
+
+/* яблоки */
+
+.apple{
+position:absolute;
+width:45px;
+height:45px;
+border-radius:50%;
+box-shadow:inset -5px -5px rgba(0,0,0,0.15);
+animation:fall 0.8s ease;
+}
+
+@keyframes fall{
+0%{
+transform:translateY(-200px) scale(0.3);
+opacity:0;
+}
+100%{
+transform:translateY(0) scale(1);
+opacity:1;
+}
+}
+
+/* кнопки */
+
+.controls{
+margin-top:25px;
+}
+
+button{
+padding:18px 30px;
+font-size:20px;
+margin:10px;
+border:none;
+border-radius:20px;
+cursor:pointer;
+color:white;
+font-weight:bold;
+box-shadow:0 6px #777;
+}
+
+button:active{
+transform:translateY(4px);
+box-shadow:0 2px #555;
+}
+
+.green{background:#022e03}
+.yellow{background:#ffc107;color:#333}
+.red{background:#f44336}
+
+/* статистика */
+
+.stats{
+margin-top:20px;
+font-size:22px;
+font-weight:bold;
+}
+
+.message{
+font-size:28px;
+color:#022004;
+margin-top:15px;
+display:none;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🌳 Дерево знаний</h1>
+<p>Выберите яблоко, которое описывает вашу работу на уроке</p>
+
+<div id="game">
+
+<img src="https://cdn-icons-png.flaticon.com/512/489/489969.png" class="tree">
+
+</div>
+
+<div class="controls">
+
+<button class="green" onclick="addApple('#4caf50','vse')">
+Я всё понял
+</button>
+
+<button class="yellow" onclick="addApple('#ffc107','nado')">
+Есть вопросы
+</button>
+
+<button class="red" onclick="addApple('#f44336','trudno')">
+Было сложно
+</button>
+
+</div>
+
+<div class="stats">
+
+😊 <span id="vse">0</span>  
+🤔 <span id="nado">0</span>  
+☹️ <span id="trudno">0</span>
+
+</div>
+
+<div class="message" id="msg">
+🌳 Наше дерево знаний выросло!
+</div>
+
+<script>
+
+let counts={
+vse:0,
+nado:0,
+trudno:0
+}
+
+let total=0
+
+function addApple(color,type){
+
+const game=document.getElementById("game")
+
+const apple=document.createElement("div")
+apple.className="apple"
+apple.style.background=color
+
+/* случайное положение на дереве */
+
+let top=Math.random()*300+80
+let left=Math.random()*500+200
+
+apple.style.top=top+"px"
+apple.style.left=left+"px"
+
+/* хвостик */
+
+apple.innerHTML="<div style='width:2px;height:10px;background:#5d4037;position:absolute;top:-8px;left:22px'></div>"
+
+game.appendChild(apple)
+
+/* счет */
+
+counts[type]++
+document.getElementById(type).innerText=counts[type]
+
+total++
+
+/* финальный эффект */
+
+if(total>=15){
+document.getElementById("msg").style.display="block"
+}
+
+}
+
+</script>
+
+</body>
+</html>
